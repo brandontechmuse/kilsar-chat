@@ -5,8 +5,8 @@ import 'package:kilsar_chat/presentation/bloc/task/task_event.dart';
 import 'package:kilsar_chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:kilsar_chat/presentation/bloc/chat/chat_event.dart';
 import 'package:kilsar_chat/core/widgets/search_header.dart';
-import 'package:kilsar_chat/presentation/pages/tasks_page.dart';
-import 'package:kilsar_chat/presentation/pages/chat_page.dart';
+import 'tasks_page.dart';
+import 'chat_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,15 +16,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
-  String searchTerm = '';
+  int _selectedIndex = 0;
+  String _searchTerm = '';
 
-  void onSearchChanged(String term) => setState(() => searchTerm = term);
+  void _onSearchChanged(String term) {
+    setState(() => _searchTerm = term);
+  }
 
-  void onItemTapped(int idx) {
+  void _onItemTapped(int idx) {
     setState(() {
-      selectedIndex = idx;
-      searchTerm = '';
+      _selectedIndex = idx;
+      _searchTerm = '';
       if (idx == 0) {
         context.read<TaskBloc>().add(LoadTasks());
       } else {
@@ -39,20 +41,20 @@ class _HomePageState extends State<HomePage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: SearchHeader(
-          currentIndex: selectedIndex,
-          onSearchChanged: onSearchChanged,
+          currentIndex: _selectedIndex,
+          onSearchChanged: _onSearchChanged,
         ),
       ),
       body: IndexedStack(
-        index: selectedIndex,
+        index: _selectedIndex,
         children: [
-          TasksPage(searchTerm: searchTerm),
-          ChatPage(searchTerm: searchTerm),
+          TasksPage(searchTerm: _searchTerm),
+          ChatPage(searchTerm: _searchTerm, isActive: _selectedIndex == 1),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: onItemTapped,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Tasks'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
