@@ -32,6 +32,8 @@ dependencies:
   # JSON Serialization
   json_annotation: ^4.8.0
 
+  flutter_dotenv: ^5.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,7 +47,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # assets:
+  assets:
+    - .env
     # Add any image or other asset directories here
     # - assets/images/
 

@@ -7,7 +7,7 @@ class RemoteDataSource {
   RemoteDataSource(this.apiClient);
 
   Future<ChatMessage> sendMessage(String text) async {
-    final aiText = await apiClient.sendPrompt(text);
+    final aiText = await apiClient.send(text);
     return ChatMessage(
       id: DateTime.now().toIso8601String(),
       text: aiText,
