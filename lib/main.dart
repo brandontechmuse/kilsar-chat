@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -16,23 +17,28 @@ import 'package:kilsar_chat/presentation/pages/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
+  await dotenv.load();
 
   final apiKey = dotenv.env['GEMINI_API_KEY'];
   if (apiKey == null || apiKey.isEmpty) {
     runApp(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
-          body: Center(child: Text('Error: GEMINI_API_KEY not found in .env')),
+          body: Center(child: Text('Error: GEMINI_API_KEY not found')),
         ),
       ),
     );
     return;
   }
 
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
-  );
+  final storage = kIsWeb
+      ? await HydratedStorage.build(
+          storageDirectory: HydratedStorage.webStorageDirectory,
+        )
+      : await HydratedStorage.build(
+          storageDirectory: await getApplicationDocumentsDirectory(),
+        );
+  HydratedBloc.storage = storage;
 
   final local = LocalDataSource();
   await local.init();
