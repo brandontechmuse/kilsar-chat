@@ -30,6 +30,7 @@ flutter run -d chrome
 - app only uses local hive storage, no cloud sync
 - ai calls depends on google gemeni key, u need .env file
 - you need to have a chat longer then the screen size for search to work otherwise the screen wont move 
+- in a production app we need to put the .env in a git ignore 
 
 ## Known Issues
 
